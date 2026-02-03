@@ -1,6 +1,8 @@
 package com.aitu.batyr.onlineshop.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.TenantId;
+
 import java.util.Objects;
 
 @Entity

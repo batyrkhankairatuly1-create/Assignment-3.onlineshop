@@ -1,6 +1,7 @@
 package com.aitu.batyr.onlineshop.controller;
 
 import com.aitu.batyr.onlineshop.model.Order;
+import com.aitu.batyr.onlineshop.repository.OrderRepository;
 import com.aitu.batyr.onlineshop.service.OrderService;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,9 +12,11 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+    private final OrderRepository orderRepository;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, OrderRepository orderRepository) {
         this.orderService = orderService;
+        this.orderRepository = orderRepository;
     }
 
     @GetMapping
@@ -43,5 +46,10 @@ public class OrderController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         orderService.delete(id);
+    }
+
+    @GetMapping("/customer/{customerId}")
+    public List<Order> getOrderByCustomer(@PathVariable Long customerId){
+        return orderService.findByCustomerId(customerId);
     }
 }

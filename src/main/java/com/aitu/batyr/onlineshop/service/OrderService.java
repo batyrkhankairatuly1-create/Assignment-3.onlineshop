@@ -54,4 +54,8 @@ public class OrderService {
     public void delete(Long id) {
         orderRepository.deleteById(id);
     }
+
+    public List<Order> findByCustomerId(Long customerId){
+        return orderRepository.findByCustomerId(customerId);
+    }
 }
