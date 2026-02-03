@@ -5,6 +5,8 @@ import com.aitu.batyr.onlineshop.model.Item;
 import com.aitu.batyr.onlineshop.repository.ItemRepository;
 import com.aitu.batyr.onlineshop.service.ItemService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -25,12 +27,19 @@ public class ItemController {
     }
 
     @PostMapping
-    public Item create(@RequestBody Item item){
-        return itemService.create(item);
+    public ResponseEntity<Item> create(@RequestBody Item item){
+        return ResponseEntity.status(HttpStatus.CREATED).body(itemService.create(item));
     }
 
     @GetMapping("/{id}")
     public Item getById(@PathVariable Long id){
         return itemRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Item is not found with id: " + id));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        itemService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

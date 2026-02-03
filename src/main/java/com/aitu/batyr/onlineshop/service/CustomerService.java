@@ -1,5 +1,6 @@
 package com.aitu.batyr.onlineshop.service;
 
+import com.aitu.batyr.onlineshop.ResourceNotFoundException;
 import com.aitu.batyr.onlineshop.model.Customer;
 import com.aitu.batyr.onlineshop.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class CustomerService {
                     existing.setPhoneNumber(updated.getPhoneNumber());
                     return customerRepository.save(existing);
                 })
-                .orElseThrow(() -> new RuntimeException("Customer not found: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found: " + id));
     }
 
     public void delete(Long id) {

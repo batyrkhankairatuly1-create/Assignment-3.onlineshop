@@ -1,8 +1,11 @@
 package com.aitu.batyr.onlineshop.controller;
 
+import com.aitu.batyr.onlineshop.ResourceNotFoundException;
 import com.aitu.batyr.onlineshop.model.Customer;
 import com.aitu.batyr.onlineshop.service.CustomerService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -23,13 +26,7 @@ public class CustomerController {
 
     @GetMapping("/{id}")
     public Customer getById(@PathVariable Long id) {
-        return customerService.getById(id)
-                .orElseThrow(() -> new RuntimeException("Customer not found: " + id));
-    }
-
-    @PostMapping
-    public Customer create(@RequestBody Customer customer) {
-        return customerService.create(customer);
+        return customerService.getById(id).orElseThrow(() -> new ResourceNotFoundException("Customer not found: " + id));
     }
 
     @PutMapping("/{id}")
@@ -37,8 +34,15 @@ public class CustomerController {
         return customerService.update(id, customer);
     }
 
+    //    error 204 no content
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id){
         customerService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping
+    public ResponseEntity<Customer> create (@RequestBody Customer customer){
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.create(customer));
     }
 }

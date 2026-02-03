@@ -1,5 +1,6 @@
 package com.aitu.batyr.onlineshop.service;
 
+import com.aitu.batyr.onlineshop.ResourceNotFoundException;
 import com.aitu.batyr.onlineshop.model.Customer;
 import com.aitu.batyr.onlineshop.model.Order;
 import com.aitu.batyr.onlineshop.repository.CustomerRepository;
@@ -30,8 +31,7 @@ public class OrderService {
     }
 
     public Order create(Long customerId, Order order) {
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found: " + customerId));
+        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer not found: " + customerId));
         order.setCustomer(customer);
         return orderRepository.save(order);
     }
@@ -56,6 +56,6 @@ public class OrderService {
     }
 
     public List<Order> findByCustomerId(Long customerId){
-        return orderRepository.findByCustomerId(customerId);
+        return orderRepository.findByCustomer_CustomerId(customerId);
     }
 }

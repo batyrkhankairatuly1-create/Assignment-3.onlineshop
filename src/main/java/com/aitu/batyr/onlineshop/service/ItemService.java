@@ -1,5 +1,6 @@
 package com.aitu.batyr.onlineshop.service;
 
+import com.aitu.batyr.onlineshop.ResourceNotFoundException;
 import com.aitu.batyr.onlineshop.model.Item;
 import com.aitu.batyr.onlineshop.repository.ItemRepository;
 import org.springframework.stereotype.Service;
@@ -20,5 +21,12 @@ public class ItemService {
 
     public Item create(Item item){
         return itemRepository.save(item);
+    }
+
+    public void delete(Long id){
+        if(!itemRepository.existsById(id)){
+            throw new ResourceNotFoundException(("Item not found with id: " + id));
+        }
+        itemRepository.deleteById(id);
     }
 }

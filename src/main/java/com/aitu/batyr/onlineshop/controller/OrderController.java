@@ -1,5 +1,6 @@
 package com.aitu.batyr.onlineshop.controller;
 
+import com.aitu.batyr.onlineshop.ResourceNotFoundException;
 import com.aitu.batyr.onlineshop.model.Order;
 import com.aitu.batyr.onlineshop.repository.OrderRepository;
 import com.aitu.batyr.onlineshop.service.OrderService;
@@ -26,8 +27,7 @@ public class OrderController {
 
     @GetMapping("/{id}")
     public Order getById(@PathVariable Long id) {
-        return orderService.getById(id)
-                .orElseThrow(() -> new RuntimeException("Order not found: " + id));
+        return orderService.getById(id).orElseThrow(() -> new ResourceNotFoundException("Order not found: " + id));
     }
 
     @PostMapping
